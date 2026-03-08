@@ -1,0 +1,4 @@
+@Itm.Discount.Api_HostAddress = http://localhost:5245
+
+GET {{Itm.Discount.Api_HostAddress}}/
+Accept: application/json
