@@ -1,0 +1,1 @@
+﻿record ReservaRequest (int EventId, int Quantity);

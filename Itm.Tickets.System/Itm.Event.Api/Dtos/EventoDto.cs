@@ -1,0 +1,1 @@
+﻿record Evento (int Id, string Nombre, decimal PrecioBase, int SillasDisponibles);
