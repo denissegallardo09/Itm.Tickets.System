@@ -27,6 +27,9 @@ app.UseHttpsRedirection();
 
 app.MapPost("/api/bookings", async (BookingRequest request, IHttpClientFactory factory) =>
 {
+    if (request.Tickets <= 0)
+        return Results.BadRequest("Cantidad de tickets inválida");
+    
     var eventClient    = factory.CreateClient("EventApi");
     var discountClient = factory.CreateClient("DiscountApi");
 
@@ -45,8 +48,6 @@ app.MapPost("/api/bookings", async (BookingRequest request, IHttpClientFactory f
     var evento    = await eventoTask.Result.Content.ReadFromJsonAsync<EventoDto>();
     var descuento = await descuentoTask.Result.Content.ReadFromJsonAsync<DescuentoDto>();
 
-    if (request.Tickets <= 0)
-        return Results.BadRequest("Cantidad de tickets inválida");
     if (request.Tickets > evento!.SillasDisponibles)
         return Results.BadRequest("Sin disponibilidad.");
 
