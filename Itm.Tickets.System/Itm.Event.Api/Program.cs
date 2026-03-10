@@ -19,7 +19,9 @@ var eventos = new List<Evento>
 
 app.MapGet("/api/events/{id}", (int id) => {
     var evento = eventos.FirstOrDefault(e => e.Id == id);
-    return evento is not null ? Results.Ok(evento) : Results.NotFound();
+    return evento is not null
+        ? Results.Ok(new EventoDto(evento.Id, evento.Nombre, evento.PrecioBase, evento.SillasDisponibles))
+        : Results.NotFound();
 })
 .WithName("GetEventById")
 .WithOpenApi();
@@ -36,7 +38,8 @@ app.MapPost("/api/events/reserve", (ReservaRequest request) => {
     var index = eventos.IndexOf(evento);
     eventos[index] = evento with { SillasDisponibles = evento.SillasDisponibles - request.Quantity };
 
-    return Results.Ok(eventos[index]);
+    var updated = eventos[index];
+    return Results.Ok(new EventoDto(updated.Id, updated.Nombre, updated.PrecioBase, updated.SillasDisponibles));
 })
 .WithName("ReserveEvent")
 .WithOpenApi();
@@ -53,7 +56,8 @@ app.MapPost("/api/events/release", (ReservaRequest request) => {
     var index = eventos.IndexOf(evento);
     eventos[index] = evento with { SillasDisponibles = evento.SillasDisponibles + request.Quantity };
 
-    return Results.Ok(eventos[index]);
+    var updated = eventos[index];
+    return Results.Ok(new EventoDto(updated.Id, updated.Nombre, updated.PrecioBase, updated.SillasDisponibles));
 })
 .WithName("ReleaseEvent")
 .WithOpenApi();

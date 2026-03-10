@@ -21,7 +21,9 @@ var descuentos = new List<Descuento>
 app.MapGet("/api/discounts/{code}", (string code) =>
 {
     var descuento = descuentos.FirstOrDefault(d => d.Codigo == code);
-    return descuento is not null ? Results.Ok(descuento) : Results.NotFound();
+    return descuento is not null
+        ? Results.Ok(new DescuentoDto(descuento.Codigo, descuento.Porcentaje))
+        : Results.NotFound();
 })
 .WithName("GetDiscountByCode")
 .WithOpenApi();

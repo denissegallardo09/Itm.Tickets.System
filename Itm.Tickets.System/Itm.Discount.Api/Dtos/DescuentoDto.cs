@@ -1,1 +1,1 @@
-record Descuento(string Codigo, decimal Porcentaje);
+record DescuentoDto(string Codigo, decimal Porcentaje);
